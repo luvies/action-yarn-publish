@@ -1,0 +1,10 @@
+{
+  "root": true,
+  "parserOptions": {
+    "project": "./tsconfig.eslint.json"
+  },
+  "extends": "./node_modules/@luvies/config/eslint.base.json",
+  "env": {
+    "es6": true
+  }
+}

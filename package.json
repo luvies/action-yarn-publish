@@ -1,0 +1,30 @@
+{
+  "name": "action-yarn-publish",
+  "version": "0.0.1",
+  "description": "A github action that will publish the current package upon package.json version changes",
+  "main": "build/action.js",
+  "repository": "https://github.com/luvies/action-yarn-publish",
+  "author": "luvies",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc --noEmit && rollup -c",
+    "lint": "./node_modules/@luvies/config/scripts/lint.sh",
+    "fix": "./node_modules/@luvies/config/scripts/lint.sh fix"
+  },
+  "devDependencies": {
+    "@luvies/config": "^2.0.3",
+    "@typescript-eslint/eslint-plugin": "^2.3.1",
+    "@typescript-eslint/parser": "^2.3.1",
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
+    "prettier": "^1.18.2",
+    "rollup": "^1.21.4",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-typescript": "^1.0.1",
+    "typescript": "^3.6.3"
+  }
+}

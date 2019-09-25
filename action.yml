@@ -1,0 +1,11 @@
+name: 'Publish package on version change'
+description: 'Detect if the version defined in the package.json is unpublished, and if so, publishes it. It will also push a git tag onto the current commit.'
+author: 'luvies'
+inputs:
+  dry-run:
+    description: 'If set to true, all actions that would have been performed are skipped.'
+    default: 'false'
+  skipped-versions:
+    description: 'A semver string of the versions to skip publishing of (see https://npm.im/semver for syntax).'
+runs:
+  main: 'build/action.js'
