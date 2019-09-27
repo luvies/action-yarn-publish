@@ -2,6 +2,8 @@ name: 'Publish package on version change'
 description: 'Detect if the version defined in the package.json is unpublished, and if so, publishes it. It will also push a git tag onto the current commit.'
 author: 'luvies'
 inputs:
+  package-path:
+    description: 'The path to the root directory containing the package.json.'
   dry-run:
     description: 'If set to true, all actions that would have been performed are skipped.'
     default: 'false'

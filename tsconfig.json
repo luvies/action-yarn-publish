@@ -1,7 +1,7 @@
 {
   "extends": "@luvies/config/tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "rootDir": "./src",
     "outDir": "./dist"
   },
