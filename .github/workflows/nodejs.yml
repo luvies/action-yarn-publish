@@ -23,8 +23,6 @@ jobs:
           yarn build
         env:
           CI: true
-      - name: test
-        run: echo ${{ github.ref }}
       - name: Check git clean
-        if: github.ref == 'master' || (github.event_name == 'pull_request' && github.base_ref == 'master')
+        if: github.ref == 'refs/heads/master' || (github.event_name == 'pull_request' && github.base_ref == 'refs/heads/master')
         run: './.github/scripts/check-clean.sh'
