@@ -2,7 +2,13 @@ import childProcess from 'child_process';
 import fs from 'fs';
 import util from 'util';
 
-export const exec = util.promisify(childProcess.exec);
+const exec = util.promisify(childProcess.exec);
+
+export type ExecFn = (command: string) => Promise<string>;
+
+export function execFactory(cwd: string): ExecFn {
+  return (command: string) => exec(command, { cwd }).then(({ stdout }) => stdout);
+}
 
 const readFile = util.promisify(fs.readFile);
 
