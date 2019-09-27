@@ -1,3 +1,4 @@
 # Disable linguist on config and output files
 build/* linguist-detectable=false
 rollup.config.js/* linguist-detectable=false
+.github/scripts/* linguist-detectable=false
