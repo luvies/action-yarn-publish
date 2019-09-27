@@ -20,6 +20,8 @@ jobs:
         run: |
           yarn
           yarn lint
-          yarn build:ci
+          yarn build
         env:
           CI: true
+      - name: Check git clean
+        run: '[ -z "$(git status -s)" ]'

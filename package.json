@@ -8,7 +8,6 @@
   "license": "MIT",
   "scripts": {
     "build": "rollup -c",
-    "build:ci": "yarn build -o dist/action.js",
     "watch": "rollup -cw",
     "lint": "./node_modules/@luvies/config/scripts/lint.sh",
     "fix": "./node_modules/@luvies/config/scripts/lint.sh fix"
