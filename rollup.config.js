@@ -8,7 +8,6 @@ export default {
   output: {
     file: 'build/action.js',
     format: 'cjs',
-    sourcemap: true,
   },
   plugins: [resolve({ preferBuiltins: true }), typescript(), commonjs(), terser()],
 };

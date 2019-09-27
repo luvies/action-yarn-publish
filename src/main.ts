@@ -1,5 +1,3 @@
-import 'source-map-support';
-
 import { action } from './action';
 import { loadConfig } from './config';
 
