@@ -24,4 +24,4 @@ jobs:
         env:
           CI: true
       - name: Check git clean
-        run: '[ -z "$(git status -s)" ]'
+        run: '.github/scripts/check-clean.sh'
