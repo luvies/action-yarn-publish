@@ -24,4 +24,5 @@ jobs:
         env:
           CI: true
       - name: Check git clean
+        if: github.ref == 'master' || (github.event_name == 'pull_request' && github.base_ref == 'master')
         run: './.github/scripts/check-clean.sh'
