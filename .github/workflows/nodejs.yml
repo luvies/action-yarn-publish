@@ -24,4 +24,4 @@ jobs:
         env:
           CI: true
       - name: Check git clean
-        run: '.github/scripts/check-clean.sh'
+        run: './.github/scripts/check-clean.sh'
