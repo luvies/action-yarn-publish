@@ -56,10 +56,11 @@ async function publish({ version, exec, dryRun, skipGitTag }: PublishArgs): Prom
   if (!skipGitTag) {
     const tag = `v${version}`;
     if (!dryRun) {
-      await exec(`git tag -a ${tag}`);
+      await exec(`git tag -a ${tag} -m "${tag}"`);
+      await exec('git push --tags');
     } else {
       const commitHash = await exec('git rev-parse --short HEAD');
-      console.log(`[DRY RUN] Would have tagged commit ${commitHash} with tag ${tag}`);
+      console.log(`[DRY RUN] Would have tagged commit ${commitHash.trim()} with tag ${tag}`);
     }
   } else {
     console.log('Skipped git tagging');
