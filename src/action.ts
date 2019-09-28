@@ -84,6 +84,7 @@ async function publish({
     const tag = `v${version}`;
     if (!dryRun) {
       const res = await fetch(`https://api.github.com/repos/${githubRepository}/git/refs`, {
+        method: 'POST',
         headers: {
           Accept: 'application/vnd.github.v3+json',
           Authorization: `token ${githubToken}`,
