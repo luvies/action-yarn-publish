@@ -1,3 +1,4 @@
+import * as actionsCore from '@actions/core';
 import { action } from './action';
 import { loadConfig } from './config';
 
@@ -6,6 +7,6 @@ async function main(): Promise<void> {
 }
 
 main().catch(err => {
-  console.error(err);
+  actionsCore.error(err);
   process.exit(1);
 });
