@@ -13,4 +13,5 @@ inputs:
     description: 'If set to true, then this action will not also write a git tag on the published commit.'
     default: 'false'
 runs:
+  using: 'node12'
   main: 'build/action.js'
