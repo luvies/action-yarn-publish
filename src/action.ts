@@ -53,7 +53,7 @@ async function publish({ version, exec, dryRun, skipGitTag }: PublishArgs): Prom
     console.log(`[DRY RUN] Would have published version ${version} to registry`);
   }
 
-  if (skipGitTag) {
+  if (!skipGitTag) {
     const tag = `v${version}`;
     if (!dryRun) {
       await exec(`git tag -a ${tag}`);
