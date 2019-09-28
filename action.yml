@@ -1,4 +1,4 @@
-name: 'Publish package on version change'
+name: 'Yarn Package Publish'
 description: 'Detect if the version defined in the package.json is unpublished, and if so, publishes it. It will also push a git tag onto the current commit.'
 author: 'luvies'
 inputs:
