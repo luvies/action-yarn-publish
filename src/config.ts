@@ -1,14 +1,19 @@
-import actionCore from '@actions/core';
+import actionsCore from '@actions/core';
 
 export interface ActionConfig {
+  // Action config.
   packagePath: string;
   dryRun: boolean;
   skippedVersions: string;
   skipGitTag: boolean;
+
+  // Env vars.
+  githubToken: string | undefined; // Given by user.
+  githubRepository: string | undefined; // Default env var by github.
 }
 
 function getBoolInput(name: string, def: string): boolean {
-  const val = actionCore.getInput(name) || def;
+  const val = actionsCore.getInput(name) || def;
 
   switch (val) {
     case 'true':
@@ -24,9 +29,11 @@ function getBoolInput(name: string, def: string): boolean {
 
 export function loadConfig(): ActionConfig {
   return {
-    packagePath: actionCore.getInput('package-path'),
+    packagePath: actionsCore.getInput('package-path'),
     dryRun: getBoolInput('dry-run', 'false'),
-    skippedVersions: actionCore.getInput('skipped-versions').trim(),
+    skippedVersions: actionsCore.getInput('skipped-versions').trim(),
     skipGitTag: getBoolInput('skip-git-tag', 'false'),
+    githubToken: process.env.GITHUB_TOKEN || undefined,
+    githubRepository: process.env.GITHUB_REPOSITORY || undefined,
   };
 }

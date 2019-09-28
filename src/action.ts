@@ -1,6 +1,8 @@
+import * as actionsCore from '@actions/core';
 import * as semver from 'semver';
 import { ActionConfig } from './config';
 import { ExecFn, execFactory, fileExists, readAll } from './util';
+import fetch from 'node-fetch';
 import path from 'path';
 
 interface PackageJson {
@@ -44,26 +46,64 @@ interface PublishArgs {
   exec: ExecFn;
   dryRun: boolean;
   skipGitTag: boolean;
+  githubToken: string | undefined;
+  githubRepository: string | undefined;
 }
 
-async function publish({ version, exec, dryRun, skipGitTag }: PublishArgs): Promise<void> {
+async function publish({
+  version,
+  exec,
+  dryRun,
+  skipGitTag,
+  githubToken,
+  githubRepository,
+}: PublishArgs): Promise<void> {
+  if (!skipGitTag) {
+    if (!githubToken) {
+      throw new Error('GITHUB_TOKEN is unset, cannot create git tag without github token');
+    }
+
+    if (!githubRepository) {
+      throw new Error(
+        'GITHUB_REPOSITORY missing from envrionment (check that the default envrionment variables are not being overwritten)',
+      );
+    }
+  }
+
   if (!dryRun) {
     await exec('yarn publish --not-interactive');
   } else {
-    console.log(`[DRY RUN] Would have published version ${version} to registry`);
+    actionsCore.info(`[DRY RUN] Would have published version ${version} to registry`);
   }
 
   if (!skipGitTag) {
+    const [longHash, shortHash] = await Promise.all([
+      exec('git rev-parse HEAD').then(h => h.trim()),
+      exec('git rev-parse --short HEAD').then(h => h.trim()),
+    ]);
     const tag = `v${version}`;
     if (!dryRun) {
-      await exec(`git tag -a ${tag} -m "${tag}"`);
-      await exec('git push --tags');
+      const res = await fetch(`https://api.github.com/repos/${githubRepository}/git/refs`, {
+        headers: {
+          Accept: 'application/vnd.github.v3+json',
+          Authorization: `token ${githubToken}`,
+        },
+        body: JSON.stringify({
+          ref: `refs/tags/${tag}`,
+          sha: longHash,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error(
+          `Failed to tag commit ${shortHash}, reason: (${res.status}) ${await res.text()}`,
+        );
+      }
     } else {
-      const commitHash = await exec('git rev-parse --short HEAD');
-      console.log(`[DRY RUN] Would have tagged commit ${commitHash.trim()} with tag ${tag}`);
+      actionsCore.info(`[DRY RUN] Would have tagged commit ${shortHash} with tag ${tag}`);
     }
   } else {
-    console.log('Skipped git tagging');
+    actionsCore.info('Skipped git tagging');
   }
 }
 
@@ -72,6 +112,8 @@ export async function action({
   dryRun,
   skippedVersions,
   skipGitTag,
+  githubToken,
+  githubRepository,
 }: ActionConfig): Promise<void> {
   const cwd = packagePath ? path.resolve(packagePath) : process.cwd();
   const pkgPath = path.resolve(cwd, 'package.json');
@@ -101,8 +143,10 @@ export async function action({
       exec,
       dryRun,
       skipGitTag,
+      githubToken,
+      githubRepository,
     });
   } else {
-    console.log(`Skipping publish, reason: ${result.reason}`);
+    actionsCore.info(`Skipping publish, reason: ${result.reason}`);
   }
 }
