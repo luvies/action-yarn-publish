@@ -76,6 +76,7 @@ async function publish({
 
   if (!dryRun) {
     await exec('yarn publish --not-interactive');
+    actionsCore.info(`Published version ${version} to registry`);
   } else {
     actionsCore.info(`[DRY RUN] Would have published version ${version} to registry`);
   }
@@ -101,7 +102,9 @@ async function publish({
         }),
       });
 
-      if (!res.ok) {
+      if (res.ok) {
+        actionsCore.info(`Created git tag ${tag}`);
+      } else {
         throw new Error(
           `Failed to tag commit ${shortHash}, reason: (${res.status}) ${await res.text()}`,
         );
