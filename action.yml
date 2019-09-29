@@ -1,5 +1,5 @@
 name: 'Yarn Package Publish'
-description: 'Detect if the version defined in the package.json is unpublished, and if so, publishes it. It will also push a git tag onto the current commit.'
+description: 'Will automatically publish unpublished package versions to the given registry.'
 author: 'luvies'
 inputs:
   package-path:
