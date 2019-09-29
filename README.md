@@ -1,6 +1,6 @@
 # Action - Yarn Publish
 
-![Github Build Status](https://github.com/luvies/action-yarn-publish/workflows/Node%20CI/badge.svg)
+[![Github Build Status](https://github.com/luvies/action-yarn-publish/workflows/Node%20CI/badge.svg)](https://github.com/luvies/action-yarn-publish)
 
 A Github action that will automatically publish a package to the registry if the version in the package.json is not already published. It can optionally push a tag to git, marking the commit the publish used.
 
@@ -17,4 +17,4 @@ This action will need a number of environment variables depending on what is bei
 - `GITHUB_TOKEN`
   - Only needed if git tagging is enabled
   - Can be given using the following
-    - `${{ secrets.GITHUB_TOKEN }}`
+    - `GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}`
