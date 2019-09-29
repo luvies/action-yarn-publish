@@ -77,7 +77,7 @@ async function publish({
   }
 
   if (!dryRun) {
-    await exec('yarn publish --not-interactive');
+    await exec('yarn publish --not-interactive --no-git-tag-version');
     actionsCore.info(`Published ${name}@${version} to registry`);
   } else {
     actionsCore.info(`[DRY RUN] Would have published ${name}@${version} to registry`);
