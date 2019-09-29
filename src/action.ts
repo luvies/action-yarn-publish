@@ -42,6 +42,7 @@ function shouldPublish({
 }
 
 interface PublishArgs {
+  name: string;
   version: string;
   exec: ExecFn;
   dryRun: boolean;
@@ -54,6 +55,7 @@ interface PublishArgs {
 const gitTagFormatRe = /\{version\}/gi;
 
 async function publish({
+  name,
   version,
   exec,
   dryRun,
@@ -76,9 +78,9 @@ async function publish({
 
   if (!dryRun) {
     await exec('yarn publish --not-interactive');
-    actionsCore.info(`Published version ${version} to registry`);
+    actionsCore.info(`Published ${name}@${version} to registry`);
   } else {
-    actionsCore.info(`[DRY RUN] Would have published version ${version} to registry`);
+    actionsCore.info(`[DRY RUN] Would have published ${name}@${version} to registry`);
   }
 
   if (gitTag) {
@@ -150,6 +152,7 @@ export async function action({
 
   if (result.should) {
     await publish({
+      name: pkg.name,
       version,
       exec,
       dryRun,
