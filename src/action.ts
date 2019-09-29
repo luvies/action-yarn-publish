@@ -45,20 +45,24 @@ interface PublishArgs {
   version: string;
   exec: ExecFn;
   dryRun: boolean;
-  skipGitTag: boolean;
+  gitTag: boolean;
+  gitTagFormat: string;
   githubToken: string | undefined;
   githubRepository: string | undefined;
 }
+
+const gitTagFormatRe = /\{version\}/gi;
 
 async function publish({
   version,
   exec,
   dryRun,
-  skipGitTag,
+  gitTag,
+  gitTagFormat,
   githubToken,
   githubRepository,
 }: PublishArgs): Promise<void> {
-  if (!skipGitTag) {
+  if (gitTag) {
     if (!githubToken) {
       throw new Error('GITHUB_TOKEN is unset, cannot create git tag without github token');
     }
@@ -76,12 +80,14 @@ async function publish({
     actionsCore.info(`[DRY RUN] Would have published version ${version} to registry`);
   }
 
-  if (!skipGitTag) {
+  if (gitTag) {
     const [longHash, shortHash] = await Promise.all([
       exec('git rev-parse HEAD').then(h => h.trim()),
       exec('git rev-parse --short HEAD').then(h => h.trim()),
     ]);
-    const tag = `v${version}`;
+
+    const tag = gitTagFormat.replace(gitTagFormatRe, version);
+
     if (!dryRun) {
       const res = await fetch(`https://api.github.com/repos/${githubRepository}/git/refs`, {
         method: 'POST',
@@ -112,7 +118,8 @@ export async function action({
   packagePath,
   dryRun,
   skippedVersions,
-  skipGitTag,
+  gitTag,
+  gitTagFormat,
   githubToken,
   githubRepository,
 }: ActionConfig): Promise<void> {
@@ -143,7 +150,8 @@ export async function action({
       version,
       exec,
       dryRun,
-      skipGitTag,
+      gitTag,
+      gitTagFormat,
       githubToken,
       githubRepository,
     });

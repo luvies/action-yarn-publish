@@ -9,9 +9,12 @@ inputs:
     default: 'false'
   skipped-versions:
     description: 'A semver string of the versions to skip publishing of (see https://npm.im/semver for syntax).'
-  skip-git-tag:
-    description: 'If set to true, then this action will not also write a git tag on the published commit.'
+  git-tag:
+    description: 'Whether to also tag the current commit with the version.'
     default: 'false'
+  git-tag-format:
+    description: 'The format the git tag should use ({version} is replaced by the package.json version).'
+    default: 'v{version}'
 runs:
   using: 'node12'
   main: 'build/action.js'
