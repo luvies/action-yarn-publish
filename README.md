@@ -6,6 +6,8 @@ A Github action that will automatically publish a package to the registry if the
 
 See [action.yml](action.yml) for more details.
 
+For a working example on how to set this action up, see my [@luvies/evaluator package workflow](https://github.com/luvies/node-evaluator/blob/master/.github/workflows/nodeci.yml).
+
 ## Environment variables
 
 This action will need a number of environment variables depending on what is being done:
